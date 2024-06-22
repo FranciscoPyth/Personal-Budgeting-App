@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const { sequelize } = require('./src/models'); // Importar sequelize para la sincronización de la base de datos
+const { sequelize } = require('./src/models'); 
 
 // para poder leer json en el body
 app.use(express.json());
@@ -10,8 +10,17 @@ app.use(express.json());
 app.use(cors());
 
 // Configuración de rutas
-const routes = require('./src/routes/gastos');
-app.use('/', routes);
+const gastosRoutes = require('./src/routes/gastos');
+const divisasRoutes = require('./src/routes/divisas');
+const mediosDePagoRoutes = require('./src/routes/mediosPago');
+const tiposTransaccionRoutes = require('./src/routes/tiposTransaccion');
+const categoriasRoutes = require('./src/routes/categorias');
+
+app.use(gastosRoutes);
+app.use(divisasRoutes);
+app.use(mediosDePagoRoutes);
+app.use(tiposTransaccionRoutes);
+app.use(categoriasRoutes);
 
 // Sincronización de la base de datos y arranque del servidor
 const port = process.env.PORT || 4000;

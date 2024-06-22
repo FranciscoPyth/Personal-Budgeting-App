@@ -2,12 +2,12 @@
 import axios from 'axios';
 import { config } from '../config';
 
-const API_URL_CATEGORIAS = config.urlCategorias;
+const API_URL_TIPO_TRANSACCION = config.urlTipoTransacciones;
 
 // Función para registrar una categoria
-export const registrarCategoria = async (obra) => {
+export const registrarTipoTransaccion = async (obra) => {
   try {
-    const response = await axios.post(API_URL_CATEGORIAS, obra);
+    const response = await axios.post(API_URL_TIPO_TRANSACCION, obra);
     return response.data;
   } catch (error) {
     console.error('Error en registrarObra:', error.response ? error.response.data : error.message);
@@ -16,9 +16,9 @@ export const registrarCategoria = async (obra) => {
 };
 
 // Función para obtener la lista de categorias
-export const obtenerCategorias = async () => {
+export const obtenerTipoTransaccion = async () => {
   try {
-    const response = await axios.get(API_URL_CATEGORIAS);
+    const response = await axios.get(API_URL_TIPO_TRANSACCION);
     return response.data;
   } catch (error) {
     throw error;

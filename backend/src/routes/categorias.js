@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { Gastos, MediosDePago, Divisas, TiposTransaccion, Categorias } = require("../models");
+const { Categorias } = require("../models");
 
 // GET: Obtener todos los gastos con filtros opcionales
-router.get("/api/gastos", async (req, res) => {
+router.get("/api/categorias", async (req, res) => {
   try {
     let where = {};
     // Agregar filtros según sea necesario, aquí hay un ejemplo para descripción
@@ -13,9 +13,8 @@ router.get("/api/gastos", async (req, res) => {
       };
     }
 
-    let items = await Gastos.findAndCountAll({
-      include: [MediosDePago, Divisas, TiposTransaccion, Categorias],
-      order: [["fecha", "ASC"]],
+    let items = await Categorias.findAndCountAll({
+      order: [["descripcion", "ASC"]],
       where,
     });
 
@@ -26,10 +25,10 @@ router.get("/api/gastos", async (req, res) => {
 });
 
 // POST: Crear un nuevo gasto
-router.post("/api/gastos", async (req, res) => {
+router.post("/api/categorias", async (req, res) => {
   try {
-    let nuevoGasto = await Gastos.create(req.body);
-    res.status(201).json(nuevoGasto);
+    let nuevaCategoria = await Categorias.create(req.body);
+    res.status(201).json(nuevaCategoria);
   } catch (error) {
     if (error instanceof ValidationError) {
       return res.status(400).json({ error: error.errors.map(e => e.message) });
@@ -39,16 +38,16 @@ router.post("/api/gastos", async (req, res) => {
 });
 
 // PUT: Actualizar un gasto existente por ID
-router.put("/api/gastos/:id", async (req, res) => {
+router.put("/api/categorias/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    let gasto = await Gastos.findByPk(id);
-    if (!gasto) {
-      return res.status(404).json({ error: "Gasto no encontrado" });
+    let categoria = await Categorias.findByPk(id);
+    if (!categoria) {
+      return res.status(404).json({ error: "Categoria no encontrado" });
     }
 
-    let updatedGasto = await gasto.update(req.body);
-    res.json(updatedGasto);
+    let updatedCategoria = await categoria.update(req.body);
+    res.json(updatedCategoria);
   } catch (error) {
     if (error instanceof ValidationError) {
       return res.status(400).json({ error: error.errors.map(e => e.message) });
@@ -58,15 +57,15 @@ router.put("/api/gastos/:id", async (req, res) => {
 });
 
 // DELETE: Eliminar un gasto existente por ID
-router.delete("/api/gastos/:id", async (req, res) => {
+router.delete("/api/categorias/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    let gasto = await Gastos.findByPk(id);
-    if (!gasto) {
-      return res.status(404).json({ error: "Gasto no encontrado" });
+    let categoria = await Categorias.findByPk(id);
+    if (!categoria) {
+      return res.status(404).json({ error: "Categoria no encontrado" });
     }
 
-    await gasto.destroy();
+    await categoria.destroy();
     res.status(204).send();
   } catch (error) {
     res.status(500).json({ error: error.message });
