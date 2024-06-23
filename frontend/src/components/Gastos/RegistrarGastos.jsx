@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { categoriaService } from '../../services/categoria.services';
-import { medioPagoService } from '../../services/medioPago.services';
-import { divisaService } from '../../services/divisa.services';
-import tipoTransaccionService from '../../services/tipoTransaccion.services';
+import { registrarGasto } from '../../services/gastos.services'; // Importa la función de servicio para registrar gasto
+import { obtenerCategorias } from '../../services/categoria.services';
+import { obtenerMediosPago } from '../../services/medioPago.services';
+import { obtenerDivisa } from '../../services/divisa.services';
+import { obtenerTipoTransaccion } from '../../services/tipoTransaccion.services';
 
 const RegistrarGastos = ({ agregarGasto }) => {
   const { register, handleSubmit } = useForm();
@@ -17,26 +18,31 @@ const RegistrarGastos = ({ agregarGasto }) => {
 
   useEffect(() => {
     // Cargar categorías
-    categoriaService.obtenerCategorias().then((data) => setCategorias(data));
+    obtenerCategorias().then((data) => setCategorias(data));
 
     // Cargar medios de pago
-    medioPagoService.obtenerMedioPago().then((data) => setMediosDePago(data));
+    obtenerMediosPago().then((data) => setMediosDePago(data));
 
     // Cargar divisas
-    divisaService.obtenerDivisa().then((data) => setDivisas(data));
+    obtenerDivisa().then((data) => setDivisas(data));
 
     // Cargar tipo de transacciones
-    tipoTransaccionService.obtenerTipoTransaccion().then((data) => setTipoTransacciones(data));
+    obtenerTipoTransaccion().then((data) => setTipoTransacciones(data));
   }, []);
 
-  const onSubmit = (data) => {
-    // Lógica para agregar el gasto (simulado)
-    console.log(data); // Solo para demostración
-    navigate('/lista'); // Navega a la lista de gastos después de registrar uno
+  const onSubmit = async (data) => {
+    try {
+      // Llama al servicio para registrar el gasto
+      await registrarGasto(data);
+      console.log('Gasto registrado:', data); // Solo para demostración
+      navigate('/lista'); // Navega a la lista de gastos después de registrar uno
+    } catch (error) {
+      console.error('Error al registrar el gasto:', error);
+    }
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-5 mb-5"> {/* Añadido mb-5 para dar margen inferior */}
       <h2 className="mb-4">Registrar Nuevo Gasto</h2>
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="mb-3">
@@ -57,10 +63,10 @@ const RegistrarGastos = ({ agregarGasto }) => {
             <select className="form-select me-2" id="categoria" {...register('categoria', { required: true })}>
               <option value="">Selecciona una categoría</option>
               {categorias.map((categoria) => (
-                <option key={categoria.id} value={categoria.nombre}>{categoria.nombre}</option>
+                <option key={categoria.id} value={categoria.descripcion}>{categoria.descripcion}</option>
               ))}
             </select>
-            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/nueva-categoria')}>+</button>
+            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/categorias')}>+</button>
           </div>
         </div>
         <div className="mb-3">
@@ -69,10 +75,10 @@ const RegistrarGastos = ({ agregarGasto }) => {
             <select className="form-select me-2" id="medioPago" {...register('medioPago', { required: true })}>
               <option value="">Selecciona un medio de pago</option>
               {mediosDePago.map((medio) => (
-                <option key={medio.id} value={medio.nombre}>{medio.nombre}</option>
+                <option key={medio.id} value={medio.descripcion}>{medio.descripcion}</option>
               ))}
             </select>
-            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/nuevo-medio-pago')}>+</button>
+            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/medio-pago')}>+</button>
           </div>
         </div>
         <div className="mb-3">
@@ -81,10 +87,10 @@ const RegistrarGastos = ({ agregarGasto }) => {
             <select className="form-select me-2" id="divisa" {...register('divisa', { required: true })}>
               <option value="">Selecciona una divisa</option>
               {divisas.map((divisa) => (
-                <option key={divisa.id} value={divisa.nombre}>{divisa.nombre}</option>
+                <option key={divisa.id} value={divisa.descripcion}>{divisa.descripcion}</option>
               ))}
             </select>
-            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/nueva-divisa')}>+</button>
+            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/divisas')}>+</button>
           </div>
         </div>
         <div className="mb-3">
@@ -93,10 +99,10 @@ const RegistrarGastos = ({ agregarGasto }) => {
             <select className="form-select me-2" id="tipoTransaccion" {...register('tipoTransaccion', { required: true })}>
               <option value="">Selecciona un Tipo de Transacción</option>
               {tipoTransacciones.map((tipoTransaccion) => (
-                <option key={tipoTransaccion.id} value={tipoTransaccion.nombre}>{tipoTransaccion.nombre}</option>
+                <option key={tipoTransaccion.id} value={tipoTransaccion.descripcion}>{tipoTransaccion.descripcion}</option>
               ))}
             </select>
-            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/nuevo-tipo-transaccion')}>+</button>
+            <button type="button" className="btn btn-outline-primary" onClick={() => navigate('/tipo-transaccion')}>+</button>
           </div>
         </div>
         <button type="submit" className="btn btn-primary me-2">Registrar Gasto</button>

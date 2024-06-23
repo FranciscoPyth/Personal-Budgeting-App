@@ -24,6 +24,21 @@ router.get("/api/tiposTransaccion", async (req, res) => {
   }
 });
 
+
+// GET: Obtener un gasto por ID
+router.get('/api/tiposTransaccion/:id', async (req, res) => {
+  try {
+    let id = req.params.id;
+    let tiposTransaccion = await TiposTransaccion.findByPk(id);
+    if (!tiposTransaccion) {
+      return res.status(404).json({ error: 'Medio de pago no encontrada' });
+    }
+    res.json(tiposTransaccion);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // POST: Crear un nuevo gasto
 router.post("/api/tiposTransaccion", async (req, res) => {
   try {

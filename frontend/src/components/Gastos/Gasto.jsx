@@ -1,14 +1,22 @@
-// src/components/Gastos/Gasto.jsx
+// Gasto.js
 
 import React from 'react';
 
-const Gasto = ({ gasto }) => {
+const Gasto = ({ gasto, onDelete }) => {
+  const handleEliminarClick = () => {
+    onDelete(gasto.idGasto); // Llama a la función onDelete pasando el ID del gasto
+  };
+
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center">
       <div>
-        <strong>{gasto.fecha}</strong> - {gasto.descripcion} ({gasto.moneda} {gasto.monto})
+        <strong>ID: {gasto.idGasto}</strong> - {gasto.descripcion}
       </div>
-      <span className="badge bg-secondary">{gasto.categoria}</span>
+      <div>
+        <button className="btn btn-danger" onClick={handleEliminarClick}>
+          Eliminar
+        </button>
+      </div>
     </li>
   );
 };

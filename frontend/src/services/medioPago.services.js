@@ -4,24 +4,56 @@ import { config } from '../config';
 
 const API_URL_MEDIOS_PAGO = config.urlMediosDePago;
 
-// Función para registrar una categoria
-export const registrarMedioPago = async (obra) => {
+// Función para registrar una categoría
+export const registrarMedioPago = async (medioPago) => {
   try {
-    const response = await axios.post(API_URL_MEDIOS_PAGO, obra);
+    const response = await axios.post(API_URL_MEDIOS_PAGO, medioPago);
     return response.data;
   } catch (error) {
-    console.error('Error en registrarObra:', error.response ? error.response.data : error.message);
+    console.error('Error en registrarMedioPago:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
 
-// Función para obtener la lista de categorias
-export const obtenerMedioPago = async () => {
+// Función para obtener la lista de categorías
+export const obtenerMediosPago = async () => {
   try {
     const response = await axios.get(API_URL_MEDIOS_PAGO);
     return response.data;
   } catch (error) {
+    console.error('Error en obtenerMediosPago:', error.response ? error.response.data : error.message);
     throw error;
   }
 };
 
+// Función para obtener una categoría por ID
+export const obtenerMedioPagoPorId = async (id) => {
+  try {
+    const response = await axios.get(`${API_URL_MEDIOS_PAGO}/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error en obtenerMedioPagoPorId:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+// Función para actualizar una categoría por ID
+export const actualizarMedioPago = async (id, medioPago) => {
+  try {
+    const response = await axios.put(`${API_URL_MEDIOS_PAGO}/${id}`, medioPago);
+    return response.data;
+  } catch (error) {
+    console.error('Error en actualizarMedioPago:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};
+
+// Función para eliminar una categoría por ID
+export const eliminarMedioPago = async (id) => {
+  try {
+    await axios.delete(`${API_URL_MEDIOS_PAGO}/${id}`);
+  } catch (error) {
+    console.error('Error en eliminarMedioPago:', error.response ? error.response.data : error.message);
+    throw error;
+  }
+};

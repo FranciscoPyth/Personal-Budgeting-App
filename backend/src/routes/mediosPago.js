@@ -24,6 +24,21 @@ router.get("/api/mediosPago", async (req, res) => {
   }
 });
 
+
+// GET: Obtener una categoría por ID
+router.get('/api/medioPago/:id', async (req, res) => {
+  try {
+    let id = req.params.id;
+    let medioPago = await MediosDePago.findByPk(id);
+    if (!medioPago) {
+      return res.status(404).json({ error: 'Medio de pago no encontrada' });
+    }
+    res.json(medioPago);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // POST: Crear un nuevo gasto
 router.post("/api/mediosPago", async (req, res) => {
   try {

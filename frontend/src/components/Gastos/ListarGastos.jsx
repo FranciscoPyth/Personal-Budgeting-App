@@ -1,15 +1,42 @@
-import React from 'react';
+// ListarGastos.js
+
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import Gasto from './Gasto';
+import { obtenerGastos, eliminarGasto } from '../../services/gastos.services';
 
-const ListarGastos = ({ gastos }) => {
+const ListarGastos = () => {
+  const [gastos, setGastos] = useState([]);
+
+  useEffect(() => {
+    cargarGastos();
+  }, []);
+
+  const cargarGastos = async () => {
+    try {
+      const gastosData = await obtenerGastos();
+      setGastos(gastosData);
+    } catch (error) {
+      console.error('Error al cargar los gastos:', error);
+    }
+  };
+
+  const handleEliminarGasto = async (idGasto) => {
+    try {
+      await eliminarGasto(idGasto);
+      setGastos(gastos.filter(gasto => gasto.idGasto !== idGasto));
+    } catch (error) {
+      console.error(`Error al eliminar el gasto con ID ${idGasto}:`, error);
+    }
+  };
+
   return (
     <div className="card mb-4">
       <div className="card-body">
         <h5 className="card-title">Listado de Gastos</h5>
         <ul className="list-group">
           {gastos.map((gasto) => (
-            <Gasto key={gasto.id} gasto={gasto} />
+            <Gasto key={gasto.idGasto} gasto={gasto} onDelete={handleEliminarGasto} />
           ))}
         </ul>
         <div className="mt-3 d-flex justify-content-start">

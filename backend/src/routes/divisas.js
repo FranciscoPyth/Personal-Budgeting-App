@@ -24,6 +24,21 @@ router.get("/api/divisas", async (req, res) => {
   }
 });
 
+// GET: Obtener un gasto por ID
+// GET: Obtener un gasto por ID
+router.get('/api/divisas/:id', async (req, res) => {
+  try {
+    let id = req.params.id;
+    let divisas = await Divisas.findByPk(id);
+    if (!divisas) {
+      return res.status(404).json({ error: 'Medio de pago no encontrada' });
+    }
+    res.json(divisas);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // POST: Crear un nuevo gasto
 router.post("/api/divisas", async (req, res) => {
   try {
