@@ -9,7 +9,7 @@ const urlServidor = "http://localhost:4000"
 const urlGastos = urlServidor + "/api/gastos";
 const urlDivisas = urlServidor + "/api/divisas";
 const urlCategorias = urlServidor + "/api/categorias";
-const urlMediosDePago = urlServidor + "/api/mediosPago";
+const urlMediosDePago = urlServidor + "/api/metodosPago";
 const urlTipoTransacciones = urlServidor + "/api/tiposTransaccion";
 
 

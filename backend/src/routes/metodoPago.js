@@ -1,8 +1,13 @@
+// backend/src/routes/metodoPago.js
+
 const express = require("express");
 const router = express.Router();
-const { MediosDePago } = require("../models");
+const { MetodosPago } = require("../models"); // Esto importará el objeto db que contiene todos los modelos
 
-// GET: Obtener todos los gastos con filtros opcionales
+// O puedes importar específicamente el modelo MetodosPago de esta manera:
+// const MetodosPago = db.MetodosPago;
+
+// GET: Obtener todos los medios de pago
 router.get("/", async (req, res) => {
   try {
     let where = {};
@@ -13,7 +18,7 @@ router.get("/", async (req, res) => {
       };
     }
 
-    let items = await MediosDePago.findAndCountAll({
+    let items = await MetodosPago.findAndCountAll({
       order: [["descripcion", "ASC"]],
       where,
     });
@@ -29,7 +34,7 @@ router.get("/", async (req, res) => {
 router.get('/:id', async (req, res) => {
   try {
     let id = req.params.id;
-    let medioPago = await MediosDePago.findByPk(id);
+    let medioPago = await MetodosPago.findByPk(id);
     if (!medioPago) {
       return res.status(404).json({ error: 'Medio de pago no encontrada' });
     }
@@ -42,7 +47,7 @@ router.get('/:id', async (req, res) => {
 // POST: Crear un nuevo gasto
 router.post("/", async (req, res) => {
   try {
-    let nuevoMedioPago = await MediosDePago.create(req.body);
+    let nuevoMedioPago = await MetodosPago.create(req.body);
     res.status(201).json(nuevoMedioPago);
   } catch (error) {
     if (error instanceof ValidationError) {
@@ -56,7 +61,7 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    let medioPago = await MediosDePago.findByPk(id);
+    let medioPago = await MetodosPago.findByPk(id);
     if (!medioPago) {
       return res.status(404).json({ error: "Medio de pago no encontrado" });
     }
@@ -75,7 +80,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
-    let medioPago = await MediosDePago.findByPk(id);
+    let medioPago = await MetodosPago.findByPk(id);
     if (!medioPago) {
       return res.status(404).json({ error: "Medio de pago no encontrado" });
     }

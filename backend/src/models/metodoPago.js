@@ -1,5 +1,7 @@
+// backend/src/models/metodoPago.js
+
 module.exports = (sequelize, DataTypes) => {
-  const MediosDePago = sequelize.define('MediosDePago', {
+  const MetodosPago = sequelize.define('MetodosPago', {
     id: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
@@ -10,5 +12,5 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, { timestamps: false });
-  return MediosDePago;
+  return MetodosPago;
 };

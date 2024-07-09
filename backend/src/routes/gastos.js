@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { Gastos, MediosDePago, Divisas, TiposTransaccion, Categorias } = require("../models");
+const { Op } = require("sequelize");
+const { Gastos, MetodosPago, Divisas, TiposTransaccion, Categorias } = require("../models");
 
 // GET: Obtener todos los gastos con filtros opcionales
 router.get("/", async (req, res) => {
@@ -14,7 +15,12 @@ router.get("/", async (req, res) => {
     }
 
     let items = await Gastos.findAndCountAll({
-      include: [MediosDePago, Divisas, TiposTransaccion, Categorias],
+      include: [
+        { model: MetodosPago },
+        { model: Divisas },
+        { model: TiposTransaccion },
+        { model: Categorias }
+      ],
       order: [["fecha", "ASC"]],
       where,
     });

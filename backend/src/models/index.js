@@ -1,3 +1,5 @@
+// backend/src/models/index.js
+
 const { Sequelize, DataTypes } = require('sequelize');
 const config = require('../config/config.json').development;
 
@@ -13,7 +15,7 @@ db.sequelize = sequelize;
 
 db.Divisas = require('./divisas')(sequelize, DataTypes);
 db.TiposTransaccion = require('./tipostransaccion')(sequelize, DataTypes);
-db.MetodosPago = require('./mediosDePago')(sequelize, DataTypes);
+db.MetodosPago = require('./metodoPago')(sequelize, DataTypes);
 db.Categorias = require('./categorias')(sequelize, DataTypes);
 db.Gastos = require('./gastos')(sequelize, DataTypes);
 
