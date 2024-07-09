@@ -3,7 +3,7 @@ const router = express.Router();
 const { MediosDePago } = require("../models");
 
 // GET: Obtener todos los gastos con filtros opcionales
-router.get("/api/mediosPago", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     let where = {};
     // Agregar filtros según sea necesario, aquí hay un ejemplo para descripción
@@ -26,7 +26,7 @@ router.get("/api/mediosPago", async (req, res) => {
 
 
 // GET: Obtener una categoría por ID
-router.get('/api/medioPago/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     let id = req.params.id;
     let medioPago = await MediosDePago.findByPk(id);
@@ -40,7 +40,7 @@ router.get('/api/medioPago/:id', async (req, res) => {
 });
 
 // POST: Crear un nuevo gasto
-router.post("/api/mediosPago", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     let nuevoMedioPago = await MediosDePago.create(req.body);
     res.status(201).json(nuevoMedioPago);
@@ -53,7 +53,7 @@ router.post("/api/mediosPago", async (req, res) => {
 });
 
 // PUT: Actualizar un gasto existente por ID
-router.put("/api/mediosPago/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let medioPago = await MediosDePago.findByPk(id);
@@ -72,7 +72,7 @@ router.put("/api/mediosPago/:id", async (req, res) => {
 });
 
 // DELETE: Eliminar un gasto existente por ID
-router.delete("/api/mediosPago/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let medioPago = await MediosDePago.findByPk(id);

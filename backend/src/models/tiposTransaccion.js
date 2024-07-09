@@ -1,20 +1,14 @@
-// models/tiposTransaccion.js
 module.exports = (sequelize, DataTypes) => {
-    const TiposTransaccion = sequelize.define('TiposTransaccion', {
-      idTipoTransaccion: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
-      descripcion: {
-        type: DataTypes.STRING,
-        allowNull: false
-      }
-    }, {
-      tableName: 'tiposTransaccion',
-      timestamps: false
-    });
-  
-    return TiposTransaccion;
-  };
-  
+  const TiposTransaccion = sequelize.define('TiposTransaccion', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    descripcion: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    }
+  }, { timestamps: false });
+  return TiposTransaccion;
+};

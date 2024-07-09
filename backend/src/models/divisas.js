@@ -1,20 +1,14 @@
-// models/divisas.js
 module.exports = (sequelize, DataTypes) => {
-    const Divisas = sequelize.define('Divisas', {
-      idDivisa: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
-      descripcion: {
-        type: DataTypes.STRING,
-        allowNull: false
-      }
-    }, {
-      tableName: 'divisas',
-      timestamps: false
-    });
-  
-    return Divisas;
-  };
-  
+  const Divisas = sequelize.define('Divisas', {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true
+    },
+    descripcion: {
+      type: DataTypes.STRING(50),
+      allowNull: false
+    }
+  }, { timestamps: false });
+  return Divisas;
+};

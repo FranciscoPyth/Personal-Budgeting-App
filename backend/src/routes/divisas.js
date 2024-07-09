@@ -3,7 +3,7 @@ const router = express.Router();
 const { Divisas } = require("../models");
 
 // GET: Obtener todos los gastos con filtros opcionales
-router.get("/api/divisas", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     let where = {};
     // Agregar filtros según sea necesario, aquí hay un ejemplo para descripción
@@ -26,7 +26,7 @@ router.get("/api/divisas", async (req, res) => {
 
 // GET: Obtener un gasto por ID
 // GET: Obtener un gasto por ID
-router.get('/api/divisas/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     let id = req.params.id;
     let divisas = await Divisas.findByPk(id);
@@ -40,7 +40,7 @@ router.get('/api/divisas/:id', async (req, res) => {
 });
 
 // POST: Crear un nuevo gasto
-router.post("/api/divisas", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     let nuevoGasto = await Divisas.create(req.body);
     res.status(201).json(nuevoGasto);
@@ -53,7 +53,7 @@ router.post("/api/divisas", async (req, res) => {
 });
 
 // PUT: Actualizar un gasto existente por ID
-router.put("/api/divisas/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let divisa = await Divisas.findByPk(id);
@@ -72,7 +72,7 @@ router.put("/api/divisas/:id", async (req, res) => {
 });
 
 // DELETE: Eliminar un gasto existente por ID
-router.delete("/api/divisas/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let divisa = await Divisas.findByPk(id);

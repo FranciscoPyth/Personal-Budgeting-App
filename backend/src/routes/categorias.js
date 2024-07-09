@@ -1,17 +1,16 @@
 const express = require('express');
 const router = express.Router();
 const { Categorias } = require('../models');
-const { ValidationError } = require('sequelize'); // Asegúrate de importar ValidationError de sequelize
-const { Op } = require('sequelize'); // Asegúrate de importar Op de sequelize para los operadores
+const { ValidationError } = require('sequelize');
+const { Op } = require('sequelize');
 
 // GET: Obtener todas las categorías con filtros opcionales
-router.get('/api/categorias', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     let where = {};
-    // Agregar filtros según sea necesario, aquí hay un ejemplo para descripción
-    if (req.query.descripcion != undefined && req.query.descripcion !== '') {
+    if (req.query.descripcion) {
       where.descripcion = {
-        [Op.like]: '%' + req.query.descripcion + '%',
+        [Op.like]: `%${req.query.descripcion}%`,
       };
     }
 
@@ -26,9 +25,8 @@ router.get('/api/categorias', async (req, res) => {
   }
 });
 
-
 // GET: Obtener una categoría por ID
-router.get('/api/categorias/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
     let id = req.params.id;
     let categoria = await Categorias.findByPk(id);
@@ -41,11 +39,9 @@ router.get('/api/categorias/:id', async (req, res) => {
   }
 });
 
-
 // POST: Crear una nueva categoría
-router.post('/api/categorias', async (req, res) => {
+router.post('/', async (req, res) => {
   try {
-    console.log(req.body);
     let nuevaCategoria = await Categorias.create(req.body);
     res.status(201).json(nuevaCategoria);
   } catch (error) {
@@ -57,7 +53,7 @@ router.post('/api/categorias', async (req, res) => {
 });
 
 // PUT: Actualizar una categoría existente por ID
-router.put('/api/categorias/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     let id = req.params.id;
     let categoria = await Categorias.findByPk(id);
@@ -76,7 +72,7 @@ router.put('/api/categorias/:id', async (req, res) => {
 });
 
 // DELETE: Eliminar una categoría existente por ID
-router.delete('/api/categorias/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     let id = req.params.id;
     let categoria = await Categorias.findByPk(id);

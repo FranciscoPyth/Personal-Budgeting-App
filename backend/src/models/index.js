@@ -1,29 +1,26 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const config = require('../.data/config.json');
+const config = require('../config/config.json').development;
 
-const env = process.env.NODE_ENV || 'development';
-const sequelize = new Sequelize(config[env]);
-
-const MediosDePago = require('./mediosDePago')(sequelize, DataTypes);
-const Divisas = require('./divisas')(sequelize, DataTypes);
-const TiposTransaccion = require('./tiposTransaccion')(sequelize, DataTypes);
-const Categorias = require('./categorias')(sequelize, DataTypes);
-const Gastos = require('./gastos')(sequelize, DataTypes);
-
-Gastos.belongsTo(MediosDePago, { foreignKey: 'idMedioPago' });
-Gastos.belongsTo(Divisas, { foreignKey: 'idDivisa' });
-Gastos.belongsTo(TiposTransaccion, { foreignKey: 'idTipoTransaccion' });
-Gastos.belongsTo(Categorias, { foreignKey: 'idCategoria' });
-
-sequelize.sync({ force: true }).then(() => {
-  console.log('Database & tables created!');
+const sequelize = new Sequelize(config.database, config.username, config.password, {
+  host: config.host,
+  dialect: config.dialect
 });
 
-module.exports = {
-  sequelize,
-  MediosDePago,
-  Divisas,
-  TiposTransaccion,
-  Categorias,
-  Gastos
-};
+const db = {};
+
+db.Sequelize = Sequelize;
+db.sequelize = sequelize;
+
+db.Divisas = require('./divisas')(sequelize, DataTypes);
+db.TiposTransaccion = require('./tipostransaccion')(sequelize, DataTypes);
+db.MetodosPago = require('./mediosDePago')(sequelize, DataTypes);
+db.Categorias = require('./categorias')(sequelize, DataTypes);
+db.Gastos = require('./gastos')(sequelize, DataTypes);
+
+// Associations
+db.Gastos.belongsTo(db.Divisas, { foreignKey: 'divisa_id' });
+db.Gastos.belongsTo(db.TiposTransaccion, { foreignKey: 'tipostransaccion_id' });
+db.Gastos.belongsTo(db.MetodosPago, { foreignKey: 'metodopago_id' });
+db.Gastos.belongsTo(db.Categorias, { foreignKey: 'categoria_id' });
+
+module.exports = db;

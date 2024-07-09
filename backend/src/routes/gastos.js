@@ -3,7 +3,7 @@ const router = express.Router();
 const { Gastos, MediosDePago, Divisas, TiposTransaccion, Categorias } = require("../models");
 
 // GET: Obtener todos los gastos con filtros opcionales
-router.get("/api/gastos", async (req, res) => {
+router.get("/", async (req, res) => {
   try {
     let where = {};
     // Agregar filtros según sea necesario, aquí hay un ejemplo para descripción
@@ -26,7 +26,7 @@ router.get("/api/gastos", async (req, res) => {
 });
 
 // POST: Crear un nuevo gasto
-router.post("/api/gastos", async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     let nuevoGasto = await Gastos.create(req.body);
     res.status(201).json(nuevoGasto);
@@ -39,7 +39,7 @@ router.post("/api/gastos", async (req, res) => {
 });
 
 // PUT: Actualizar un gasto existente por ID
-router.put("/api/gastos/:id", async (req, res) => {
+router.put("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let gasto = await Gastos.findByPk(id);
@@ -58,7 +58,7 @@ router.put("/api/gastos/:id", async (req, res) => {
 });
 
 // DELETE: Eliminar un gasto existente por ID
-router.delete("/api/gastos/:id", async (req, res) => {
+router.delete("/:id", async (req, res) => {
   try {
     let id = req.params.id;
     let gasto = await Gastos.findByPk(id);
