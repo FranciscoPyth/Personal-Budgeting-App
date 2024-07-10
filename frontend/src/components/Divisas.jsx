@@ -39,8 +39,8 @@ const Divisa = () => {
       } else if (modo === 'editar') {
         console.log('Actualizar divisa:', data);
         console.log('Divisa actual:', divisaActual);
-        console.log('idDivisa:', divisaActual.idDivisa);
-        await actualizarDivisa(divisaActual.idDivisa, data);
+        console.log('id:', divisaActual.id);
+        await actualizarDivisa(divisaActual.id, data);
       }
       reset();
       setModo('listar');
@@ -50,9 +50,9 @@ const Divisa = () => {
     }
   };
 
-  const handleEditar = async (idDivisa) => {
+  const handleEditar = async (id) => {
     try {
-      const divisa = await obtenerDivisaPorId(idDivisa);
+      const divisa = await obtenerDivisaPorId(id);
       setDivisaActual(divisa);
       reset(divisa);
       setModo('editar');
@@ -61,10 +61,10 @@ const Divisa = () => {
     }
   };
 
-  const handleEliminar = async (idDivisa) => {
+  const handleEliminar = async (id) => {
     try {
-      console.log('Eliminar divisa con idDivisa:', idDivisa);
-      await eliminarDivisa(idDivisa);
+      console.log('Eliminar divisa con id:', id);
+      await eliminarDivisa(id);
       cargarDivisas();
     } catch (error) {
       console.error('Error al eliminar divisa:', error);
@@ -90,14 +90,14 @@ const Divisa = () => {
           </thead>
           <tbody>
             {divisas.map(divisa => (
-              <tr key={divisa.idDivisa}>
-                <td>{divisa.idDivisa}</td>
+              <tr key={divisa.id}>
+                <td>{divisa.id}</td>
                 <td>{divisa.descripcion}</td>
                 <td>
-                  <button onClick={() => handleEditar(divisa.idDivisa)} className="btn btn-light me-2">
+                  <button onClick={() => handleEditar(divisa.id)} className="btn btn-light me-2">
                     <FaEdit />
                   </button>
-                  <button onClick={() => handleEliminar(divisa.idDivisa)} className="btn btn-light text-danger">
+                  <button onClick={() => handleEliminar(divisa.id)} className="btn btn-light text-danger">
                     <FaTrash />
                   </button>
                 </td>

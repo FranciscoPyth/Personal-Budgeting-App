@@ -8,6 +8,7 @@ const API_URL_GASTOS = config.urlGastos;
 // Función para registrar un nuevo gasto
 export const registrarGasto = async (nuevoGasto) => {
   try {
+    console.log('Nuevo gasto:', nuevoGasto);
     const response = await axios.post(API_URL_GASTOS, nuevoGasto);
     return response.data;
   } catch (error) {

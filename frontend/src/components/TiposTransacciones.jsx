@@ -39,8 +39,8 @@ const TipoTransaccion = () => {
       } else if (modo === 'editar') {
         console.log('Actualizar tipo de transacción:', data);
         console.log('Tipo de transacción actual:', tipoTransaccionActual);
-        console.log('idTipoTransaccion:', tipoTransaccionActual.idTipoTransaccion);
-        await actualizarTipoTransaccion(tipoTransaccionActual.idTipoTransaccion, data);
+        console.log('id:', tipoTransaccionActual.id);
+        await actualizarTipoTransaccion(tipoTransaccionActual.id, data);
       }
       reset();
       setModo('listar');
@@ -50,9 +50,9 @@ const TipoTransaccion = () => {
     }
   };
 
-  const handleEditar = async (idTipoTransaccion) => {
+  const handleEditar = async (id) => {
     try {
-      const tipoTransaccion = await obtenerTipoTransaccionPorId(idTipoTransaccion);
+      const tipoTransaccion = await obtenerTipoTransaccionPorId(id);
       setTipoTransaccionActual(tipoTransaccion);
       reset(tipoTransaccion);
       setModo('editar');
@@ -61,10 +61,10 @@ const TipoTransaccion = () => {
     }
   };
 
-  const handleEliminar = async (idTipoTransaccion) => {
+  const handleEliminar = async (id) => {
     try {
-      console.log('Eliminar tipo de transacción con idTipoTransaccion:', idTipoTransaccion);
-      await eliminarTipoTransaccion(idTipoTransaccion);
+      console.log('Eliminar tipo de transacción con id:', id);
+      await eliminarTipoTransaccion(id);
       cargarTiposTransaccion();
     } catch (error) {
       console.error('Error al eliminar tipo de transacción:', error);
@@ -90,14 +90,14 @@ const TipoTransaccion = () => {
           </thead>
           <tbody>
             {tiposTransaccion.map(tipoTransaccion => (
-              <tr key={tipoTransaccion.idTipoTransaccion}>
-                <td>{tipoTransaccion.idTipoTransaccion}</td>
+              <tr key={tipoTransaccion.id}>
+                <td>{tipoTransaccion.id}</td>
                 <td>{tipoTransaccion.descripcion}</td>
                 <td>
-                  <button onClick={() => handleEditar(tipoTransaccion.idTipoTransaccion)} className="btn btn-light me-2">
+                  <button onClick={() => handleEditar(tipoTransaccion.id)} className="btn btn-light me-2">
                     <FaEdit />
                   </button>
-                  <button onClick={() => handleEliminar(tipoTransaccion.idTipoTransaccion)} className="btn btn-light text-danger">
+                  <button onClick={() => handleEliminar(tipoTransaccion.id)} className="btn btn-light text-danger">
                     <FaTrash />
                   </button>
                 </td>

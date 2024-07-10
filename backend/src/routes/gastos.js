@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { Op } = require("sequelize");
 const { Gastos, MetodosPago, Divisas, TiposTransaccion, Categorias } = require("../models");
+const { ValidationError } = require("sequelize"); // Asegúrate de importar ValidationError
 
 // GET: Obtener todos los gastos con filtros opcionales
 router.get("/", async (req, res) => {
@@ -27,6 +28,7 @@ router.get("/", async (req, res) => {
 
     res.json(items.rows);
   } catch (error) {
+    console.error("Error al obtener los gastos:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -34,9 +36,11 @@ router.get("/", async (req, res) => {
 // POST: Crear un nuevo gasto
 router.post("/", async (req, res) => {
   try {
+    console.log("Datos recibidos en el backend:", req.body); // Añade esta línea
     let nuevoGasto = await Gastos.create(req.body);
     res.status(201).json(nuevoGasto);
   } catch (error) {
+    console.error("Error al crear el gasto:", error); // Añade esta línea
     if (error instanceof ValidationError) {
       return res.status(400).json({ error: error.errors.map(e => e.message) });
     }

@@ -7,10 +7,10 @@ import {
   obtenerMedioPagoPorId, 
   actualizarMedioPago, 
   eliminarMedioPago
-} from '../services/medioPago.services';
+} from '../services/metodoPago.services';
 import { FaTrash, FaEdit } from 'react-icons/fa'; // Importamos los iconos de react-icons
 
-const MedioPago = () => {
+const MetodoPago = () => {
   const [mediosPago, setMediosPago] = useState([]);
   const [modo, setModo] = useState('listar'); // listar, editar, eliminar, nuevo
   const [medioPagoActual, setMedioPagoActual] = useState(null);
@@ -90,14 +90,14 @@ const MedioPago = () => {
           </thead>
           <tbody>
             {mediosPago.map(medioPago => (
-              <tr key={medioPago.idMedioPago}>
-                <td>{medioPago.idMedioPago}</td>
+              <tr key={medioPago.id}>
+                <td>{medioPago.id}</td>
                 <td>{medioPago.descripcion}</td>
                 <td>
-                  <button onClick={() => handleEditar(medioPago.idMedioPago)} className="btn btn-light me-2">
+                  <button onClick={() => handleEditar(medioPago.id)} className="btn btn-light me-2">
                     <FaEdit />
                   </button>
-                  <button onClick={() => handleEliminar(medioPago.idMedioPago)} className="btn btn-light text-danger">
+                  <button onClick={() => handleEliminar(medioPago.id)} className="btn btn-light text-danger">
                     <FaTrash />
                   </button>
                 </td>
@@ -128,4 +128,4 @@ const MedioPago = () => {
   );
 };
 
-export default MedioPago;
+export default MetodoPago;

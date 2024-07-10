@@ -21,12 +21,12 @@ const ListarGastos = () => {
     }
   };
 
-  const handleEliminarGasto = async (idGasto) => {
+  const handleEliminarGasto = async (id) => {
     try {
-      await eliminarGasto(idGasto);
-      setGastos(gastos.filter(gasto => gasto.idGasto !== idGasto));
+      await eliminarGasto(id);
+      setGastos(gastos.filter(gasto => gasto.id !== id));
     } catch (error) {
-      console.error(`Error al eliminar el gasto con ID ${idGasto}:`, error);
+      console.error(`Error al eliminar el gasto con ID ${id}:`, error);
     }
   };
 
@@ -36,7 +36,7 @@ const ListarGastos = () => {
         <h5 className="card-title">Listado de Gastos</h5>
         <ul className="list-group">
           {gastos.map((gasto) => (
-            <Gasto key={gasto.idGasto} gasto={gasto} onDelete={handleEliminarGasto} />
+            <Gasto key={gasto.id} gasto={gasto} onDelete={handleEliminarGasto} />
           ))}
         </ul>
         <div className="mt-3 d-flex justify-content-start">

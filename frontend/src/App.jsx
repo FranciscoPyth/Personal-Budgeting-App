@@ -6,7 +6,7 @@ import RegistrarGastos from './components/Gastos/RegistrarGastos';
 import ListarGastos from './components/Gastos/ListarGastos';
 import gastos from './mockData/gastos';
 import Categorias from './components/Categorias';
-import MedioPago from './components/MediosPago';
+import MedioPago from './components/MetodoPago';
 import TipoTransaccion from './components/TiposTransacciones';
 import Divisa from './components/Divisas';
 

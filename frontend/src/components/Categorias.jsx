@@ -39,8 +39,8 @@ const Categorias = () => {
       } else if (modo === 'editar') {
         console.log('Actualizar categoría:', data);
         console.log('Categoría actual:', categoriaActual);
-        console.log('idCategoria:', categoriaActual.idCategoria);
-        await actualizarCategoria(categoriaActual.idCategoria, data);
+        console.log('id:', categoriaActual.id);
+        await actualizarCategoria(categoriaActual.id, data);
       }
       reset();
       setModo('listar');
@@ -50,9 +50,9 @@ const Categorias = () => {
     }
   };
 
-  const handleEditar = async (idCategoria) => {
+  const handleEditar = async (id) => {
     try {
-      const categoria = await obtenerCategoriaPorId(idCategoria);
+      const categoria = await obtenerCategoriaPorId(id);
       setCategoriaActual(categoria);
       reset(categoria);
       setModo('editar');
@@ -61,10 +61,10 @@ const Categorias = () => {
     }
   };
 
-  const handleEliminar = async (idCategoria) => {
+  const handleEliminar = async (id) => {
     try {
-      console.log('Eliminar categoría con idCategoria:', idCategoria);
-      await eliminarCategoria(idCategoria);
+      console.log('Eliminar categoría con id:', id);
+      await eliminarCategoria(id);
       cargarCategorias();
     } catch (error) {
       console.error('Error al eliminar categoría:', error);
@@ -90,14 +90,14 @@ const Categorias = () => {
           </thead>
           <tbody>
             {categorias.map(categoria => (
-              <tr key={categoria.idCategoria}>
-                <td>{categoria.idCategoria}</td>
+              <tr key={categoria.id}>
+                <td>{categoria.id}</td>
                 <td>{categoria.descripcion}</td>
                 <td>
-                  <button onClick={() => handleEditar(categoria.idCategoria)} className="btn btn-light me-2">
+                  <button onClick={() => handleEditar(categoria.id)} className="btn btn-light me-2">
                     <FaEdit />
                   </button>
-                  <button onClick={() => handleEliminar(categoria.idCategoria)} className="btn btn-light text-danger">
+                  <button onClick={() => handleEliminar(categoria.id)} className="btn btn-light text-danger">
                     <FaTrash />
                   </button>
                 </td>

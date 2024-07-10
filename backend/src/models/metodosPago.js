@@ -1,4 +1,4 @@
-// backend/src/models/metodoPago.js
+// backend/src/models/metodosPago.js
 
 module.exports = (sequelize, DataTypes) => {
   const MetodosPago = sequelize.define('MetodosPago', {

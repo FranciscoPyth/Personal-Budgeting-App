@@ -15,7 +15,7 @@ db.sequelize.sync()
 // Configurar rutas
 app.use('/api/divisas', require('./src/routes/divisas'));
 app.use('/api/tipostransaccion', require('./src/routes/tipostransaccion'));
-app.use('/api/metodosPago', require('./src/routes/metodoPago'));
+app.use('/api/metodosPago', require('./src/routes/metodosPago'));
 app.use('/api/categorias', require('./src/routes/categorias'));
 app.use('/api/gastos', require('./src/routes/gastos'));
 
