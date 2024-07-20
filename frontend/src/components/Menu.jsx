@@ -1,7 +1,6 @@
 // src/components/Menu.jsx
 import React from "react";
 import { NavLink } from "react-router-dom";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Menu() {
@@ -9,7 +8,7 @@ function Menu() {
     <nav className="navbar navbar-dark bg-dark navbar-expand-md">
       <div className="container-fluid">
         <a className="navbar-brand" href="#!">
-          <i className="fa fa-industry"></i>
+          <i className="fa"></i>
           <span>Gestión de Gastos</span>
         </a>
         <button

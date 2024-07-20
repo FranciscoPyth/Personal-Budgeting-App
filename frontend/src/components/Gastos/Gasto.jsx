@@ -1,6 +1,7 @@
 // Gasto.js
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Gasto = ({ gasto, onDelete }) => {
   const handleEliminarClick = () => {
@@ -13,8 +14,14 @@ const Gasto = ({ gasto, onDelete }) => {
         <strong>{gasto.id}</strong> | {gasto.descripcion} | ${gasto.monto} | {gasto.fecha}
       </div>
       <div>
+        <Link to={`/editar/${gasto.id}`} className="btn btn-warning me-2">
+          <i className="fa fa-edit"></i> Modificar
+        </Link>
+        <Link to={`/observar/${gasto.id}`} className="btn btn-info me-2">
+          <i className="fa fa-eye"></i> Observar
+        </Link>
         <button className="btn btn-danger" onClick={handleEliminarClick}>
-          Eliminar
+          <i className="fa fa-trash"></i> Eliminar
         </button>
       </div>
     </li>
