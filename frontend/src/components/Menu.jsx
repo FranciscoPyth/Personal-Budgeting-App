@@ -1,9 +1,9 @@
 // src/components/Menu.jsx
-import React from "react";
-import { NavLink } from "react-router-dom";
-
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 function Menu() {
+
   return (
     <nav className="navbar navbar-dark bg-dark navbar-expand-md">
       <div className="container-fluid">
@@ -39,12 +39,16 @@ function Menu() {
                 Lista de gastos
               </NavLink>
             </li>
+            <li className="nav-item">
+              <button className="nav-link btn btn-link">
+                Logout
+              </button>
+            </li>
           </ul>
         </div>
       </div>
     </nav>
   );
 }
-
 
 export { Menu };

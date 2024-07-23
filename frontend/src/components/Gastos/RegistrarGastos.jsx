@@ -7,7 +7,7 @@ import { obtenerMediosPago } from '../../services/metodoPago.services';
 import { obtenerDivisa } from '../../services/divisa.services';
 import { obtenerTipoTransaccion } from '../../services/tipoTransaccion.services';
 
-const RegistrarGastos = ({}) => {
+const RegistrarGastos = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
 

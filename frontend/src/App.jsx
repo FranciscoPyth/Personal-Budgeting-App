@@ -11,6 +11,7 @@ import MedioPago from './components/MetodoPago';
 import TipoTransaccion from './components/TiposTransacciones';
 import Divisa from './components/Divisas';
 import EditarGasto from './components/Gastos/EditarGasto';
+import Login from './components/Login';
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path='/tipo-transaccion' element={<TipoTransaccion/>}></Route>
           <Route path='/divisas' element={<Divisa/>}></Route>
           <Route path="/editar-gasto/:id" element={<EditarGasto />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/inicio" replace />} />
         </Routes>
       </div>
