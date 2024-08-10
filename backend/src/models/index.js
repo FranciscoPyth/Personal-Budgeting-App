@@ -23,6 +23,6 @@ db.Gastos.belongsTo(db.Divisas, { foreignKey: 'divisa_id', targetKey: 'id' });
 db.Gastos.belongsTo(db.TiposTransacciones, { foreignKey: 'tipostransaccion_id', targetKey: 'id' });
 db.Gastos.belongsTo(db.MetodosPagos, { foreignKey: 'metodopago_id', targetKey: 'id' });
 db.Gastos.belongsTo(db.Categorias, { foreignKey: 'categoria_id', targetKey: 'id' });
-db.Gastos.belongsTo(db.Usuarios, { foreignKey: 'usuarios_id', targetKey: 'id' });
+db.Gastos.belongsTo(db.Usuarios, { foreignKey: 'usuario_id', targetKey: 'id' });
 
 module.exports = db;
