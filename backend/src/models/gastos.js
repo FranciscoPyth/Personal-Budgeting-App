@@ -26,14 +26,14 @@ module.exports = (sequelize, DataTypes) => {
     tipostransaccion_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'TiposTransaccion',
+        model: 'TiposTransacciones',
         key: 'id'
       }
     },
     metodopago_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'MetodosPago',
+        model: 'MetodosPagos',
         key: 'id'
       }
     },
@@ -41,6 +41,13 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       references: {
         model: 'Categorias',
+        key: 'id'
+      }
+    },
+    usuarios_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Usuarios',
         key: 'id'
       }
     }

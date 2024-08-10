@@ -10,14 +10,14 @@ CREATE TABLE divisas (
     descripcion VARCHAR(50) NOT NULL
 );
 
--- Crear la tabla 'tipostransaccion'
-CREATE TABLE tipostransaccion (
+-- Crear la tabla 'tipostransacciones'
+CREATE TABLE tipostransacciones (
     id INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(50) NOT NULL
 );
 
--- Crear la tabla 'metodospago'
-CREATE TABLE metodospago (
+-- Crear la tabla 'metodospagos'
+CREATE TABLE metodospagos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(50) NOT NULL
 );
@@ -26,6 +26,14 @@ CREATE TABLE metodospago (
 CREATE TABLE categorias (
     id INT AUTO_INCREMENT PRIMARY KEY,
     descripcion VARCHAR(50) NOT NULL
+);
+
+-- Crear la tabla 'usuarios'
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE
 );
 
 -- Crear la tabla 'gastos' con todas las foreign keys
@@ -38,8 +46,10 @@ CREATE TABLE gastos (
     tipostransaccion_id INT,
     metodopago_id INT,
     categoria_id INT,
+    usuario_id INT,
     FOREIGN KEY (divisa_id) REFERENCES divisas(id),
-    FOREIGN KEY (tipostransaccion_id) REFERENCES tipostransaccion(id),
-    FOREIGN KEY (metodopago_id) REFERENCES metodospago(id),
-    FOREIGN KEY (categoria_id) REFERENCES categorias(id)
+    FOREIGN KEY (tipostransaccion_id) REFERENCES tipostransacciones(id),
+    FOREIGN KEY (metodopago_id) REFERENCES metodospagos(id),
+    FOREIGN KEY (categoria_id) REFERENCES categorias(id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );

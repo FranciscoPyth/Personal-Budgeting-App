@@ -6,25 +6,44 @@ import { obtenerCategorias } from '../../services/categoria.services';
 import { obtenerMediosPago } from '../../services/metodoPago.services';
 import { obtenerDivisa } from '../../services/divisa.services';
 import { obtenerTipoTransaccion } from '../../services/tipoTransaccion.services';
+import { format, parse, isValid } from 'date-fns';
 
 const RegistrarGastos = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, setValue } = useForm();
   const navigate = useNavigate();
 
   const [categorias, setCategorias] = useState([]);
   const [mediosDePago, setMediosDePago] = useState([]);
   const [divisas, setDivisas] = useState([]);
   const [tipoTransacciones, setTipoTransacciones] = useState([]);
+  const [usuario, setUsuario] = useState({});
 
   useEffect(() => {
     obtenerCategorias().then((data) => setCategorias(data));
     obtenerMediosPago().then((data) => setMediosDePago(data));
     obtenerDivisa().then((data) => setDivisas(data));
     obtenerTipoTransaccion().then((data) => setTipoTransacciones(data));
+    localStorage.getItem('usuario') && setUsuario(JSON.parse(localStorage.getItem('usuario')));
   }, []);
+
+  const handleDateChange = (event) => {
+    const inputDate = parse(event.target.value, 'yyyy-MM-dd', new Date());
+    if (isValid(inputDate)) {
+      const formattedDate = format(inputDate, 'dd/MM/yyyy');
+      setValue('fecha', formattedDate);
+    }
+  };
+
+  const setTodayDate = () => {
+    const today = new Date();
+    const formattedDate = format(today, 'dd/MM/yyyy');
+    setValue('fecha', formattedDate);
+  };
 
   const onSubmit = async (data) => {
     try {
+      data.fecha = format(parse(data.fecha, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd');
+      data.usuario_id = usuario.id; 
       await registrarGasto(data);
       console.log('Gasto registrado:', data);
       navigate('/lista');
@@ -47,7 +66,17 @@ const RegistrarGastos = () => {
         </div>
         <div className="mb-3">
           <label htmlFor="fecha" className="form-label">Fecha de la transacción</label>
-          <input type="date" className="form-control" id="fecha" {...register('fecha', { required: true })} />
+          <div className="d-flex">
+            <input 
+              type="text" 
+              className="form-control me-2" 
+              id="fecha" 
+              placeholder="DD/MM/YYYY" 
+              onBlur={handleDateChange} 
+              {...register('fecha', { required: true })}
+            />
+            <button type="button" className="btn btn-outline-primary" onClick={setTodayDate}>Hoy</button>
+          </div>
         </div>
         <div className="mb-3">
           <label htmlFor="categoria_id" className="form-label">Categoría</label>

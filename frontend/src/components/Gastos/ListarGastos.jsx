@@ -6,6 +6,7 @@ import { obtenerTipoTransaccion } from '../../services/tipoTransaccion.services'
 import { obtenerMediosPago } from '../../services/metodoPago.services';
 import { obtenerDivisa } from '../../services/divisa.services';
 import { Modal, Button, Form } from 'react-bootstrap';
+import '../../styles/Gastos.css';
 
 const ListarGastos = () => {
   const [gastos, setGastos] = useState([]);
@@ -177,7 +178,7 @@ const ListarGastos = () => {
             {modalType === 'consultar' ? 'Consultar Gasto' : 'Editar Gasto'}
           </Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body className="modal-body-scroll">
           {selectedGasto && (
             <Form>
               <Form.Group className="mb-3" controlId="formDescripcion">
@@ -255,7 +256,7 @@ const ListarGastos = () => {
                 )}
               </Form.Group>
               <Form.Group className="mb-3" controlId="formMetodoPago">
-                <Form.Label>Medio de Pago</Form.Label>
+                <Form.Label>Método Pago</Form.Label>
                 {modalType === 'consultar' ? (
                   <Form.Control
                     type="text"

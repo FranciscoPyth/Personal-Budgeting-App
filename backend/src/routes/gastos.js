@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Op } = require("sequelize");
-const { Gastos, MetodosPago, Divisas, TiposTransaccion, Categorias } = require("../models");
+const { Gastos, MetodosPago, Divisas, TiposTransaccion, Categorias, Usuarios } = require("../models");
 const { ValidationError } = require("sequelize"); // Asegúrate de importar ValidationError
 
 // GET: Obtener todos los gastos con filtros opcionales
@@ -20,7 +20,8 @@ router.get("/", async (req, res) => {
         { model: MetodosPago },
         { model: Divisas },
         { model: TiposTransaccion },
-        { model: Categorias }
+        { model: Categorias },
+        { model: Usuarios }
       ],
       order: [["fecha", "ASC"]],
       where,

@@ -14,10 +14,12 @@ db.sequelize.sync()
 
 // Configurar rutas
 app.use('/api/divisas', require('./src/routes/divisas'));
-app.use('/api/tipostransaccion', require('./src/routes/tipostransaccion'));
-app.use('/api/metodosPago', require('./src/routes/metodosPago'));
+app.use('/api/tiposTransacciones', require('./src/routes/tiposTransacciones'));
+app.use('/api/metodosPagos', require('./src/routes/metodospagos'));
 app.use('/api/categorias', require('./src/routes/categorias'));
 app.use('/api/gastos', require('./src/routes/gastos'));
+app.use('/api/login', require('./src/routes/login'));
+app.use('/api/register', require('./src/routes/registerUser'));
 
 // Manejo de errores
 app.use((err, req, res, next) => {
