@@ -6,7 +6,13 @@ import { obtenerTipoTransaccion } from '../../services/tipoTransaccion.services'
 import { obtenerMediosPago } from '../../services/metodoPago.services';
 import { obtenerDivisa } from '../../services/divisa.services';
 import { Modal, Button, Form } from 'react-bootstrap';
+import { parseJwt } from '../parseJWT.ts';
 import '../../styles/Gastos.css';
+
+const formatDate = (date) => {
+  const [year, month, day] = date.split('-');
+  return `${day}/${month}/${year}`;
+};
 
 const ListarGastos = () => {
   const [gastos, setGastos] = useState([]);
@@ -26,37 +32,39 @@ const ListarGastos = () => {
     metodopago: '',
     categoria: ''
   });
+  
+  const [usuario_id, setUsuario] = useState(null);
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
-    cargarGastos();
-    cargarOpciones();
-  }, []);
+    const fetchData = async () => {
+      if (token) {
+        const decodedToken = parseJwt(token);
+        setUsuario(decodedToken.id);
+      }
 
-  const cargarGastos = async () => {
-    try {
-      const gastosData = await obtenerGastos();
-      setGastos(gastosData);
-    } catch (error) {
-      console.error('Error al cargar los gastos:', error);
-    }
-  };
+      if (usuario_id) {
+        try {
+          const [gastosData, categoriasData, tiposTransaccionData, metodosPagoData, divisasData] = await Promise.all([
+            obtenerGastos(usuario_id),
+            obtenerCategorias(),
+            obtenerTipoTransaccion(),
+            obtenerMediosPago(),
+            obtenerDivisa()
+          ]);
+          setGastos(gastosData);
+          setCategorias(categoriasData);
+          setTiposTransaccion(tiposTransaccionData);
+          setMetodosPago(metodosPagoData);
+          setDivisas(divisasData);
+        } catch (error) {
+          console.error('Error al cargar los datos:', error);
+        }
+      }
+    };
 
-  const cargarOpciones = async () => {
-    try {
-      const [categoriasData, tiposTransaccionData, metodosPagoData, divisasData] = await Promise.all([
-        obtenerCategorias(),
-        obtenerTipoTransaccion(),
-        obtenerMediosPago(),
-        obtenerDivisa()
-      ]);
-      setCategorias(categoriasData);
-      setTiposTransaccion(tiposTransaccionData);
-      setMetodosPago(metodosPagoData);
-      setDivisas(divisasData);
-    } catch (error) {
-      console.error('Error al cargar las opciones:', error);
-    }
-  };
+    fetchData();
+  }, [token, usuario_id]);
 
   const handleEliminarGasto = async (id) => {
     try {
@@ -130,7 +138,7 @@ const ListarGastos = () => {
                 <tr key={gasto.id}>
                   <td>{gasto.descripcion}</td>
                   <td>${gasto.monto}</td>
-                  <td>{gasto.fecha}</td>
+                  <td>{formatDate(gasto.fecha)}</td>
                   <td className="align-middle">
                     <div className="d-flex align-items-center">
                       <button
@@ -220,21 +228,23 @@ const ListarGastos = () => {
                     readOnly
                   />
                 ) : (
-                  <Form.Select
+                  <Form.Control
+                    as="select"
                     name="divisa"
                     value={formValues.divisa}
                     onChange={handleInputChange}
                   >
-                    {divisas.map((divisa) => (
+                    <option value="">Seleccionar divisa</option>
+                    {divisas.map(divisa => (
                       <option key={divisa.id} value={divisa.id}>
                         {divisa.descripcion}
                       </option>
                     ))}
-                  </Form.Select>
+                  </Form.Control>
                 )}
               </Form.Group>
               <Form.Group className="mb-3" controlId="formTipoTransaccion">
-                <Form.Label>Tipo Transacción</Form.Label>
+                <Form.Label>Tipo de Transacción</Form.Label>
                 {modalType === 'consultar' ? (
                   <Form.Control
                     type="text"
@@ -242,21 +252,23 @@ const ListarGastos = () => {
                     readOnly
                   />
                 ) : (
-                  <Form.Select
+                  <Form.Control
+                    as="select"
                     name="tipotransaccion"
                     value={formValues.tipotransaccion}
                     onChange={handleInputChange}
                   >
-                    {tiposTransaccion.map((tipo) => (
+                    <option value="">Seleccionar tipo de transacción</option>
+                    {tiposTransaccion.map(tipo => (
                       <option key={tipo.id} value={tipo.id}>
                         {tipo.descripcion}
                       </option>
                     ))}
-                  </Form.Select>
+                  </Form.Control>
                 )}
               </Form.Group>
               <Form.Group className="mb-3" controlId="formMetodoPago">
-                <Form.Label>Método Pago</Form.Label>
+                <Form.Label>Metodo de Pago</Form.Label>
                 {modalType === 'consultar' ? (
                   <Form.Control
                     type="text"
@@ -264,17 +276,19 @@ const ListarGastos = () => {
                     readOnly
                   />
                 ) : (
-                  <Form.Select
+                  <Form.Control
+                    as="select"
                     name="metodopago"
                     value={formValues.metodopago}
                     onChange={handleInputChange}
                   >
-                    {metodosPago.map((metodo) => (
+                    <option value="">Seleccionar metodo de pago</option>
+                    {metodosPago.map(metodo => (
                       <option key={metodo.id} value={metodo.id}>
                         {metodo.descripcion}
                       </option>
                     ))}
-                  </Form.Select>
+                  </Form.Control>
                 )}
               </Form.Group>
               <Form.Group className="mb-3" controlId="formCategoria">
@@ -286,32 +300,34 @@ const ListarGastos = () => {
                     readOnly
                   />
                 ) : (
-                  <Form.Select
+                  <Form.Control
+                    as="select"
                     name="categoria"
                     value={formValues.categoria}
                     onChange={handleInputChange}
                   >
-                    {categorias.map((categoria) => (
+                    <option value="">Seleccionar categoría</option>
+                    {categorias.map(categoria => (
                       <option key={categoria.id} value={categoria.id}>
                         {categoria.descripcion}
                       </option>
                     ))}
-                  </Form.Select>
+                  </Form.Control>
                 )}
               </Form.Group>
             </Form>
           )}
         </Modal.Body>
-        {modalType === 'editar' && (
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Cancelar
-            </Button>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleCloseModal}>
+            Cerrar
+          </Button>
+          {modalType === 'editar' && (
             <Button variant="primary" onClick={handleSaveChanges}>
               Guardar Cambios
             </Button>
-          </Modal.Footer>
-        )}
+          )}
+        </Modal.Footer>
       </Modal>
     </div>
   );

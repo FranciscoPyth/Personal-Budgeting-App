@@ -7,6 +7,7 @@ import { obtenerMediosPago } from '../../services/metodoPago.services';
 import { obtenerDivisa } from '../../services/divisa.services';
 import { obtenerTipoTransaccion } from '../../services/tipoTransaccion.services';
 import { format, parse, isValid } from 'date-fns';
+import { parseJwt } from '../parseJWT.ts';
 
 const RegistrarGastos = () => {
   const { register, handleSubmit, setValue } = useForm();
@@ -16,14 +17,35 @@ const RegistrarGastos = () => {
   const [mediosDePago, setMediosDePago] = useState([]);
   const [divisas, setDivisas] = useState([]);
   const [tipoTransacciones, setTipoTransacciones] = useState([]);
-  const [usuario, setUsuario] = useState({});
+  const [usuario, setUsuario] = useState(null);
 
   useEffect(() => {
-    obtenerCategorias().then((data) => setCategorias(data));
-    obtenerMediosPago().then((data) => setMediosDePago(data));
-    obtenerDivisa().then((data) => setDivisas(data));
-    obtenerTipoTransaccion().then((data) => setTipoTransacciones(data));
-    localStorage.getItem('usuario') && setUsuario(JSON.parse(localStorage.getItem('usuario')));
+    const fetchData = async () => {
+      try {
+        const [categoriasData, mediosDePagoData, divisasData, tipoTransaccionesData] = await Promise.all([
+          obtenerCategorias(),
+          obtenerMediosPago(),
+          obtenerDivisa(),
+          obtenerTipoTransaccion()
+        ]);
+
+        setCategorias(categoriasData);
+        setMediosDePago(mediosDePagoData);
+        setDivisas(divisasData);
+        setTipoTransacciones(tipoTransaccionesData);
+
+        const token = localStorage.getItem('token');
+        if (token) {
+          const decodedToken = parseJwt(token);
+          setUsuario(decodedToken);
+          console.log('Usuario:', decodedToken);
+        }
+      } catch (error) {
+        console.error('Error al cargar los datos:', error);
+      }
+    };
+
+    fetchData();
   }, []);
 
   const handleDateChange = (event) => {
@@ -43,10 +65,14 @@ const RegistrarGastos = () => {
   const onSubmit = async (data) => {
     try {
       data.fecha = format(parse(data.fecha, 'dd/MM/yyyy', new Date()), 'yyyy-MM-dd');
-      data.usuario_id = usuario.id; 
-      await registrarGasto(data);
-      console.log('Gasto registrado:', data);
-      navigate('/lista');
+      if (usuario && usuario.id) {
+        data.usuario_id = usuario.id; 
+        await registrarGasto(data);
+        console.log('Gasto registrado:', data);
+        navigate('/lista');
+      } else {
+        console.error('No se ha encontrado el ID del usuario.');
+      }
     } catch (error) {
       console.error('Error al registrar el gasto:', error);
     }

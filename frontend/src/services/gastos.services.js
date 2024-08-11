@@ -18,9 +18,12 @@ export const registrarGasto = async (nuevoGasto) => {
 };
 
 // Función para obtener la lista de gastos
-export const obtenerGastos = async () => {
+export const obtenerGastos = async (usuario_id) => {
   try {
-    const response = await axios.get(API_URL_GASTOS);
+    const response = await axios.get(API_URL_GASTOS, {
+        params: { usuario_id }
+      }
+    );
     return response.data;
   } catch (error) {
     console.error('Error en obtenerGastos:', error);

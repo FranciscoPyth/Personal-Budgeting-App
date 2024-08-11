@@ -8,11 +8,20 @@ const { ValidationError } = require("sequelize"); // Asegúrate de importar Vali
 router.get("/", async (req, res) => {
   try {
     let where = {};
-    // Agregar filtros según sea necesario, aquí hay un ejemplo para descripción
+
+    // Filtro por descripción
     if (req.query.descripcion != undefined && req.query.descripcion !== "") {
       where.descripcion = {
         [Op.like]: "%" + req.query.descripcion + "%",
       };
+    }
+
+    // Filtro por usuario_id
+    if (req.query.usuario_id != undefined && req.query.usuario_id !== "") {
+      where.usuario_id = req.query.usuario_id; // Asegúrate de que el campo en la base de datos sea 'usuario_id'
+    } else {
+      console.error("No se ha proporcionado el ID del usuario.");
+      return res.status(400).json({ error: "Falta el ID del usuario." });
     }
 
     let items = await Gastos.findAndCountAll({
@@ -33,6 +42,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
 
 // POST: Crear un nuevo gasto
 router.post("/", async (req, res) => {
