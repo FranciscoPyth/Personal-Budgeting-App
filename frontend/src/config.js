@@ -3,7 +3,7 @@ En este archivo se definen las URL de los servicios REST que se van a consumir. 
 estandarizar un poco más el proceso y no tener que modificar cada archivo que consuma una URL
 */
 
-const urlServidor = process.env.URL_SERVIDOR || "http://localhost:4000"
+const urlServidor = "https://budgeting-server.onrender.com";
 
 
 const urlGastos = urlServidor + "/api/gastos";
