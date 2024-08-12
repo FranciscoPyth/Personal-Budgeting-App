@@ -1,10 +1,29 @@
 const { Sequelize, DataTypes } = require('sequelize');
-const config = require('../config/config.json').development;
+require('dotenv').config();
 
-const sequelize = new Sequelize(config.database, config.username, config.password, {
-  host: config.host,
-  dialect: config.dialect,
+const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT || 5432,
+  dialect: process.env.DB_DIALECT,
+  logging: console.log,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false
+    }
+  }
 });
+
+// Probar la conexión
+(async () => {
+  try {
+    await sequelize.authenticate();
+    console.log('Conexión a la base de datos establecida con éxito.');
+  } catch (error) {
+    console.error('No se pudo conectar a la base de datos:', error);
+    process.exit(1);
+  }
+})();
 
 const db = {};
 

@@ -10,9 +10,13 @@ import { parseJwt } from '../parseJWT.ts';
 import '../../styles/Gastos.css';
 
 const formatDate = (date) => {
-  const [year, month, day] = date.split('-');
+  const parsedDate = new Date(date);
+  const day = String(parsedDate.getUTCDate()).padStart(2, '0'); // Día con dos dígitos
+  const month = String(parsedDate.getUTCMonth() + 1).padStart(2, '0'); // Mes con dos dígitos (0-11, por lo que sumamos 1)
+  const year = parsedDate.getUTCFullYear(); // Año
   return `${day}/${month}/${year}`;
 };
+
 
 const ListarGastos = () => {
   const [gastos, setGastos] = useState([]);

@@ -5,6 +5,7 @@ yarn-error.log
 
 # Environment variables
 .env
+.config
 
 # macOS
 .DS_Store
