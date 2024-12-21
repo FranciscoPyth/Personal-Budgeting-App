@@ -8,6 +8,13 @@ module.exports = (sequelize, DataTypes) => {
     descripcion: {
       type: DataTypes.STRING(50),
       allowNull: false
+    },
+    usuario_id: {
+      type: DataTypes.INTEGER,
+      references: {
+        model: 'Usuarios',
+        key: 'id'
+      }
     }
   }, { timestamps: false });
   return TiposTransacciones;

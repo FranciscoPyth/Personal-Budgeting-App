@@ -8,6 +8,17 @@ const { Op } = require('sequelize');
 router.get('/', async (req, res) => {
   try {
     let where = {};
+
+    // Obtener el usuario_id de los parámetros de consulta
+    const usuario_id = req.query.usuario_id;
+
+    if (!usuario_id) {
+      return res.status(400).json({ error: 'Usuario no autenticado' });
+    }
+
+    // Agregar filtro para usuario_id
+    where.usuario_id = usuario_id;
+
     if (req.query.descripcion) {
       where.descripcion = {
         [Op.like]: `%${req.query.descripcion}%`,

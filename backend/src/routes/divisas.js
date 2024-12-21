@@ -6,6 +6,17 @@ const { Divisas } = require("../models");
 router.get("/", async (req, res) => {
   try {
     let where = {};
+
+    // Obtener el usuario_id de los parámetros de consulta
+    const usuario_id = req.query.usuario_id;
+
+    if (!usuario_id) {
+      return res.status(400).json({ error: 'Usuario no autenticado' });
+    }
+
+    // Agregar filtro para usuario_id
+    where.usuario_id = usuario_id;
+
     // Agregar filtros según sea necesario, aquí hay un ejemplo para descripción
     if (req.query.descripcion != undefined && req.query.descripcion !== "") {
       where.descripcion = {

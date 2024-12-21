@@ -3,16 +3,11 @@ require('dotenv').config();
 
 const sequelize = new Sequelize(process.env.DB_DATABASE, process.env.DB_USERNAME, process.env.DB_PASSWORD, {
   host: process.env.DB_HOST,
-  port: process.env.DB_PORT || 5432,
+  port: process.env.DB_PORT || 3306, // Puerto estándar de MySQL
   dialect: process.env.DB_DIALECT,
-  logging: console.log,
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  }
+  logging: console.log, // Muestra logs detallados
 });
+
 
 // Probar la conexión
 (async () => {
@@ -43,5 +38,9 @@ db.Gastos.belongsTo(db.TiposTransacciones, { foreignKey: 'tipostransaccion_id', 
 db.Gastos.belongsTo(db.MetodosPagos, { foreignKey: 'metodopago_id', targetKey: 'id' });
 db.Gastos.belongsTo(db.Categorias, { foreignKey: 'categoria_id', targetKey: 'id' });
 db.Gastos.belongsTo(db.Usuarios, { foreignKey: 'usuario_id', targetKey: 'id' });
+db.Categorias.belongsTo(db.Usuarios, { foreignKey: 'usuario_id', targetKey: 'id' });
+db.Divisas.belongsTo(db.Usuarios, { foreignKey: 'usuario_id', targetKey: 'id' });
+db.TiposTransacciones.belongsTo(db.Usuarios, { foreignKey: 'usuario_id', targetKey: 'id' });
+db.MetodosPagos.belongsTo(db.Usuarios, { foreignKey: 'usuario_id', targetKey: 'id' });
 
 module.exports = db;
